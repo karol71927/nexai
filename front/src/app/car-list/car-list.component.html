@@ -1,0 +1,49 @@
+<div class="flex-end">
+  <button mat-button (click)="onAddCar()">Add</button>
+</div>
+
+<table mat-table [dataSource]="cars">
+  @for (column of displayedColumns; track column) {
+  <ng-container [matColumnDef]="column.property">
+    <th mat-header-cell *matHeaderCellDef> {{column.name}} </th>
+    <td mat-cell *matCellDef="let element"> {{element[column.property]}} </td>
+  </ng-container>
+  }
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onEditCar(element)">
+          <mat-icon>edit</mat-icon> Edytuj
+        </button>
+        @if (!element.isRented){
+        <button mat-menu-item (click)="onDeleteCar(element)">
+          <mat-icon>delete</mat-icon> Usuń
+        </button>
+        }
+        @if (element.isRented) {
+        <button mat-menu-item (click)="onReturnCar(element)">
+          <mat-icon>keyboard_return</mat-icon> Zwróć
+        </button>
+        }
+        @else {
+        <button mat-menu-item (click)="onRentCar(element)">
+          <mat-icon>keyboard_return</mat-icon> Wypożycz
+        </button>
+        }
+      </mat-menu>
+    </td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumnProperties"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumnProperties;"></tr>
+</table>
+
+<mat-paginator [pageSize]="pagination.size" [pageSizeOptions]="pagination.sizeOptions" [length]="pagination.length"
+  (page)="handlePageEvent($event)"></mat-paginator>

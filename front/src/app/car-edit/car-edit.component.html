@@ -1,0 +1,44 @@
+<button mat-button color="accent" (click)="goBack()">
+  <mat-icon>arrow_back</mat-icon> Back
+</button>
+
+
+<form [formGroup]="form" (ngSubmit)="onSave()" class="form-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Brand</mat-label>
+    <mat-select formControlName="brand">
+      @for (brand of brands | async; track brand){
+      <mat-option [value]="brand">
+        {{ brand }}
+      </mat-option>
+      }
+    </mat-select>
+    @if (form.get('brand')?.invalid && form.get('brand')?.touched){
+    <mat-error>
+      Brand is required
+    </mat-error>}
+  </mat-form-field>
+
+
+  <mat-form-field appearance="outline">
+    <mat-label>VIN</mat-label>
+    <input matInput formControlName="vin" placeholder="Enter VIN number" />
+    @if(form.get('vin')?.invalid && form.get('vin')?.touched) {
+    <mat-error>
+      VIN is required
+    </mat-error>}
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Registration Number</mat-label>
+    <input matInput formControlName="registrationNumber" placeholder="Enter registration number" />
+    @if (form.get('registrationNumber')?.invalid && form.get('registrationNumber')?.touched){
+    <mat-error>
+      Registration number is required
+    </mat-error>}
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+    Submit
+  </button>
+</form>
