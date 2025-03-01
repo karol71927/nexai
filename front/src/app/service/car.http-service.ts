@@ -1,9 +1,12 @@
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { Car } from '../types/car.type';
-import { Injectable, resource } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { EditCar } from '../types/edit-car.type';
 import { ClientData } from '../types/client-data.type';
 import { PaginatedHttpResponse } from '../types/paginated-http-response.type';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { CarHttpResponse } from './http-response/car.http-response';
 
 @Injectable({
   providedIn: 'root',
@@ -72,8 +75,12 @@ export class CarHttpService {
     },
   ];
 
+  constructor(private readonly client: HttpClient) {}
+
   getAvailableBrands(): Observable<string[]> {
-    return of(['Toyota', 'Honda', 'Ford', 'BMW', 'Tesla']);
+    return this.client
+      .get<{ name: string }[]>(`${environment.baseUrl}/brands`)
+      .pipe(map((response) => response.map((brand) => brand.name)));
   }
 
   getList(
@@ -83,35 +90,72 @@ export class CarHttpService {
     const limit = pageSize;
     const offset = pageIndex * pageSize;
 
-    return of({
-      resources: this.mockCars,
-      limit,
-      offset,
-      total: this.mockCars.length,
-    });
+    return this.client
+      .get<PaginatedHttpResponse<CarHttpResponse>>(
+        `${environment.baseUrl}/cars`,
+        {
+          params: {
+            limit,
+            offset,
+          },
+        }
+      )
+      .pipe(
+        map((response) => {
+          return {
+            ...response,
+            resources: response.resources.map(this.mapCarHttpResponseToCar),
+          };
+        })
+      );
   }
 
   getById(id: string): Observable<Car> {
-    return of(this.mockCars[0]);
+    return this.client
+      .get<CarHttpResponse>(`${environment.baseUrl}/cars/${id}`)
+      .pipe(map(this.mapCarHttpResponseToCar));
   }
 
   add(car: EditCar): Observable<void> {
-    return of();
+    return this.client
+      .post(`${environment.baseUrl}/cars`, car)
+      .pipe(map(() => {}));
   }
 
-  edit(id: string, car: EditCar): Observable<void> {
-    return of();
+  edit(id: string, car: Partial<EditCar>): Observable<void> {
+    return this.client
+      .patch(`${environment.baseUrl}/cars/${id}`, car)
+      .pipe(map(() => {}));
   }
 
   delete(id: string): Observable<void> {
-    return of();
+    return this.client
+      .delete(`${environment.baseUrl}/cars/${id}`)
+      .pipe(map(() => {}));
   }
 
   returnCar(id: string): Observable<void> {
-    return of();
+    return this.client
+      .delete(`${environment.baseUrl}/cars/${id}/clients`)
+      .pipe(map(() => {}));
   }
 
   rentCar(id: string, client: ClientData): Observable<void> {
-    return of();
+    return this.client
+      .patch(`${environment.baseUrl}/cars/${id}/clients`, client)
+      .pipe(map(() => {}));
+  }
+
+  private mapCarHttpResponseToCar(response: CarHttpResponse): Car {
+    return {
+      id: response.id,
+      brand: response.brand,
+      clientEmail: response.client?.email,
+      clientAddress: response.client?.address,
+      vin: response.vin,
+      registrationNumber: response.registrationNumber,
+      isRented: response.isRented,
+      currentLocation: response.location,
+    };
   }
 }

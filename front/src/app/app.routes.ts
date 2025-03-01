@@ -16,4 +16,22 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./car-edit/car-edit.component').then((m) => m.CarEditComponent),
   },
+  {
+    path: '404',
+    loadComponent: () =>
+      import('./not-found/not-found.component').then(
+        (m) => m.NotFoundComponent
+      ),
+  },
+  {
+    path: 'no-internet',
+    loadComponent: () =>
+      import('./no-internet/no-internet.component').then(
+        (m) => m.NoInternetComponent
+      ),
+  },
+  {
+    path: '**',
+    redirectTo: '/404',
+  },
 ];

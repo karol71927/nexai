@@ -1,13 +1,28 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { fromEvent, merge } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  template: `<router-outlet></router-outlet>`,
 })
-export class AppComponent {
-  title = 'front';
+export class AppComponent implements OnInit {
+  constructor(private readonly router: Router) {}
+
+  ngOnInit(): void {
+    merge(
+      fromEvent(window, 'online').pipe(map(() => true)),
+      fromEvent(window, 'offline').pipe(map(() => false))
+    )
+      .pipe(startWith(navigator.onLine))
+      .subscribe((online) => {
+        if (online) {
+          return;
+        }
+        this.router.navigate(['/no-internet']);
+      });
+  }
 }

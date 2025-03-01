@@ -1,10 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Car, CarSchema } from '../modules/core/car/model/car.model';
-import {
-  Brand,
-  BrandSchema,
-} from '../modules/supporting/brand/model/brand.model';
+import { Car, CarSchema } from '../../core/car/model/car.model';
+import { Brand, BrandSchema } from '../../supporting/brand/model/brand.model';
 import { Seeder } from './seeder/seeder';
 
 @Module({

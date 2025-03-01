@@ -33,7 +33,11 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './car-edit.component.css',
 })
 export class CarEditComponent {
-  form: FormGroup;
+  form: FormGroup = new FormGroup({
+    brand: new FormControl('', [Validators.required]),
+    vin: new FormControl('', [Validators.required]),
+    registrationNumber: new FormControl('', [Validators.required]),
+  });
   brands: Observable<string[]>;
   private action: 'create' | 'edit' = 'create';
   private carId: string;
@@ -66,7 +70,9 @@ export class CarEditComponent {
         })
       )
       .subscribe((car) => {
-        this.initForm(car);
+        if (car) {
+          this.form.patchValue(car);
+        }
       });
 
     this.brands = this.carHttpService.getAvailableBrands();
@@ -92,17 +98,5 @@ export class CarEditComponent {
 
   goBack(): void {
     this.router.navigate(['../..']);
-  }
-
-  private initForm(car: Car | null): void {
-    this.form = new FormGroup({
-      brand: new FormControl('', [Validators.required]),
-      vin: new FormControl('', [Validators.required]),
-      registrationNumber: new FormControl('', [Validators.required]),
-    });
-
-    if (car) {
-      this.form.patchValue(car);
-    }
   }
 }

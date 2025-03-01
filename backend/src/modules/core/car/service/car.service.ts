@@ -115,7 +115,7 @@ export class CarService {
   }
 
   async remove(id: string): Promise<void> {
-    const car = await this.carModel.findById(id);
+    const car = await this.carModel.findById(id).exec();
 
     if (!car) {
       throw new NotFoundException('Car not found');
@@ -125,6 +125,6 @@ export class CarService {
       throw new BadRequestException('Cannot delete rented car');
     }
 
-    await this.carModel.deleteOne({ id });
+    await this.carModel.deleteOne({ _id: id }).exec();
   }
 }

@@ -52,7 +52,7 @@ export class CarController {
   @ApiNotFoundResponse({
     description: 'Car not found',
   })
-  async findById(id: string): Promise<CarHttpResponse> {
+  async findById(@Param('id') id: string): Promise<CarHttpResponse> {
     const car = await this.carService.findOne(id);
 
     return new CarHttpResponse(car);

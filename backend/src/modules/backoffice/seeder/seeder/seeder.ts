@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Car } from '../../modules/core/car/model/car.model';
-import { Brand } from '../../modules/supporting/brand/model/brand.model';
+import { Car } from '../../../core/car/model/car.model';
+import { Brand } from '../../../supporting/brand/model/brand.model';
 import { Model } from 'mongoose';
 
 @Injectable()

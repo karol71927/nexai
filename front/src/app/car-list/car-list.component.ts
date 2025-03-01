@@ -142,16 +142,16 @@ export class CarListComponent implements OnInit {
   }
 
   handlePageEvent(event: PageEvent): void {
+    if (event.pageIndex !== this.pagination.pageIndex) {
+      this.pagination.pageIndex = event.pageIndex;
+    }
+
     if (event.pageSize !== this.pagination.size) {
       this.pagination.size = event.pageSize;
       this.pagination.pageIndex = 0;
     }
 
-    if (event.pageIndex !== this.pagination.pageIndex) {
-      this.pagination.pageIndex = event.pageIndex;
-
-      this.getCars();
-    }
+    this.getCars();
   }
 
   private getCars(): void {
@@ -160,6 +160,13 @@ export class CarListComponent implements OnInit {
       .pipe(
         tap((response) => {
           this.pagination.length = response.total;
+          if (
+            response.resources.length === 0 &&
+            this.pagination.pageIndex > 0
+          ) {
+            this.pagination.pageIndex = 0;
+            this.getCars();
+          }
           this.changeDetectorRef.detectChanges();
         }),
         map((response) => response.resources)

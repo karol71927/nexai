@@ -46,4 +46,4 @@
 </table>
 
 <mat-paginator [pageSize]="pagination.size" [pageSizeOptions]="pagination.sizeOptions" [length]="pagination.length"
-  (page)="handlePageEvent($event)"></mat-paginator>
+  [pageIndex]="pagination.pageIndex" (page)="handlePageEvent($event)"></mat-paginator>

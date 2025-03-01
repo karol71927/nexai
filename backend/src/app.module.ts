@@ -6,7 +6,7 @@ import { CarModule } from './modules/core/car/car.module';
 import { BrandModule } from './modules/supporting/brand/brand.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ClientAddressModule } from './modules/supporting/client-address/client-address.module';
-import { SeederModule } from './seeder/seeder.module';
+import { SeederModule } from './modules/backoffice/seeder/seeder.module';
 
 @Module({
   imports: [
