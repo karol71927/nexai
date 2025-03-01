@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    entrypoint: ['nest', 'start', '--debug', '0.0.0.0:9229', '--watch']
+    container_name: backend-app
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - database
+    environment:
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+      MONGO_DATABASE: nest
+      MONGO_USER: root
+      MONGO_PASSWORD: root
+      SEED: true
+
+  database:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - db_data:/var/lib/data
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+
+volumes:
+  db_data: {}
