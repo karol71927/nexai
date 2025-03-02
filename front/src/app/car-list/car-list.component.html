@@ -43,6 +43,9 @@
 
   <tr mat-header-row *matHeaderRowDef="displayedColumnProperties"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumnProperties;"></tr>
+  <tr *matNoDataRow>
+    <td>Brak danych</td>
+  </tr>
 </table>
 
 <mat-paginator [pageSize]="pagination.size" [pageSizeOptions]="pagination.sizeOptions" [length]="pagination.length"
