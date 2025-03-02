@@ -28,14 +28,22 @@ import { SearchComponent } from '../search/search.component';
   styleUrl: './car-list.component.css',
 })
 export class CarListComponent implements OnInit {
-  displayedColumns: { property: string; name: string }[] = [
-    { property: 'brand', name: 'Marka' },
-    { property: 'clientEmail', name: 'Email klienta' },
-    { property: 'clientAddress', name: 'Adres klienta' },
-    { property: 'vin', name: 'Numer VIN' },
-    { property: 'registrationNumber', name: 'Numer rejestracyjny' },
-    { property: 'isRented', name: 'W wypożyczeniu' },
-    { property: 'currentLocation', name: 'Aktualna lokacja' },
+  displayedColumns: {
+    property: string;
+    name: string;
+    type?: 'string' | 'bool';
+  }[] = [
+    { property: 'brand', name: 'Marka', type: 'string' },
+    { property: 'clientEmail', name: 'Email klienta', type: 'string' },
+    { property: 'clientAddress', name: 'Adres klienta', type: 'string' },
+    { property: 'vin', name: 'Numer VIN', type: 'string' },
+    {
+      property: 'registrationNumber',
+      name: 'Numer rejestracyjny',
+      type: 'string',
+    },
+    { property: 'isRented', name: 'W wypożyczeniu', type: 'bool' },
+    { property: 'currentLocation', name: 'Aktualna lokacja', type: 'string' },
   ];
 
   displayedColumnProperties = [
