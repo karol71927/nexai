@@ -1,7 +1,8 @@
 <div class="flex-end">
-  <button mat-button (click)="onAddCar()">Dodaj</button>
+  <app-search (search)="onSearch($event)"></app-search>
+
+  <button mat-flat-button (click)="onAddCar()">Dodaj</button>
 </div>
-<app-search (search)="onSearch($event)"></app-search>
 <table mat-table [dataSource]="cars">
   @for (column of displayedColumns; track column) {
   <ng-container [matColumnDef]="column.property">

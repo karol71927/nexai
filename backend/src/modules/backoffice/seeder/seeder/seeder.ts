@@ -61,7 +61,7 @@ export class Seeder implements OnApplicationBootstrap {
     for (let i = 0; i < carsToSeed; i++) {
       const brand = this.getRandomArrayElement(brandNames);
       const vin = this.generateRandomString(17);
-      const registrationNumber = this.generateRandomString(6);
+      const registrationNumber = this.generateRandomString(8);
 
       const addClient = Math.random() < 0.5;
       if (addClient) {

@@ -8,10 +8,10 @@ export class Car {
   @Prop()
   brand: string;
 
-  @Prop({ unique: true })
+  @Prop({ unique: true, length: 17 })
   vin: string;
 
-  @Prop({ unique: true })
+  @Prop({ unique: true, minlength: 7, maxlength: 8 })
   registrationNumber: string;
 
   @Prop({

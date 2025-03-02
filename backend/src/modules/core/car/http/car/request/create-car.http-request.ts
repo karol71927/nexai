@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsString, Length } from 'class-validator';
 
 export class CreateCarHttpRequest {
   @ApiProperty()
@@ -8,9 +8,11 @@ export class CreateCarHttpRequest {
 
   @ApiProperty()
   @IsString()
+  @Length(17, 17)
   vin: string;
 
   @ApiProperty()
   @IsString()
+  @Length(7, 8)
   registrationNumber: string;
 }

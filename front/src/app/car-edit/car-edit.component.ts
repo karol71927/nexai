@@ -5,7 +5,6 @@ import { map, Observable, of, switchMap, tap } from 'rxjs';
 import {
   FormControl,
   FormGroup,
-  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -35,8 +34,16 @@ import { AsyncPipe } from '@angular/common';
 export class CarEditComponent {
   form: FormGroup = new FormGroup({
     brand: new FormControl('', [Validators.required]),
-    vin: new FormControl('', [Validators.required]),
-    registrationNumber: new FormControl('', [Validators.required]),
+    vin: new FormControl('', [
+      Validators.required,
+      Validators.minLength(17),
+      Validators.maxLength(17),
+    ]),
+    registrationNumber: new FormControl('', [
+      Validators.required,
+      Validators.minLength(7),
+      Validators.maxLength(8),
+    ]),
   });
   brands: Observable<string[]>;
   private action: 'create' | 'edit' = 'create';

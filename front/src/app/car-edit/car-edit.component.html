@@ -23,19 +23,27 @@
   <mat-form-field appearance="outline">
     <mat-label>VIN</mat-label>
     <input matInput formControlName="vin" placeholder="Wprowadź VIN" />
-    @if(form.get('vin')?.invalid && form.get('vin')?.touched) {
+    @if(form.get('vin')?.hasError('required') && form.get('vin')?.touched) {
     <mat-error>
       VIN jest wymagany
     </mat-error>}
+    @if((form.get('vin')?.hasError('minlength') || form.get('vin')?.hasError('maxlength')) &&
+    form.get('vin')?.touched) {
+    <mat-error>Numer VIN powinien mieć 17 znaków.</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="outline">
     <mat-label>Numer rejestracyjny</mat-label>
     <input matInput formControlName="registrationNumber" placeholder="Wprowadź numer rejestracyjny" />
-    @if (form.get('registrationNumber')?.invalid && form.get('registrationNumber')?.touched){
+    @if (form.get('registrationNumber')?.hasError('required') && form.get('registrationNumber')?.touched){
     <mat-error>
       Numer rejestracyjny jest wymagany
     </mat-error>}
+    @if((form.get('registrationNumber')?.hasError('minlength') || form.get('registrationNumber')?.hasError('maxlength'))
+    && form.get('registrationNumber')?.touched) {
+    <mat-error>Numer rejestracyjny powinien mieć od 7 do 8 znaków.</mat-error>
+    }
   </mat-form-field>
 
   <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
