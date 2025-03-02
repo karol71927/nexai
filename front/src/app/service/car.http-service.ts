@@ -85,7 +85,8 @@ export class CarHttpService {
 
   getList(
     pageIndex = 0,
-    pageSize = 10
+    pageSize = 10,
+    search: string | null = null
   ): Observable<PaginatedHttpResponse<Car>> {
     const limit = pageSize;
     const offset = pageIndex * pageSize;
@@ -97,6 +98,7 @@ export class CarHttpService {
           params: {
             limit,
             offset,
+            search: search ?? '',
           },
         }
       )

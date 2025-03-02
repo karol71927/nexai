@@ -36,8 +36,13 @@ export class CarController {
   @ApiOkPaginatedResponse(CarHttpResponse)
   async find(
     @Query() { limit, offset }: PaginatedQueryParams,
+    @Query('search') search: string,
   ): Promise<PaginatedHttpResponse<CarHttpResponse>> {
-    const [cars, total] = await this.carService.findPaginated(limit, offset);
+    const [cars, total] = await this.carService.findPaginated(
+      limit,
+      offset,
+      search || undefined,
+    );
 
     return new PaginatedHttpResponse(
       limit,

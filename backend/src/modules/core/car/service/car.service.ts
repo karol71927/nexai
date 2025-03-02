@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Car } from '../model/car.model';
-import { Model } from 'mongoose';
+import { Model, RootFilterQuery } from 'mongoose';
 import { QueryBus } from '@nestjs/cqrs';
 import { IsExistingCarBrandQuery } from '../../../supporting/brand/use-case/query/is-existing-car-brand.query';
 
@@ -27,14 +27,32 @@ export class CarService {
     return car;
   }
 
-  async findPaginated(limit: number, offset: number): Promise<[Car[], number]> {
-    const total = await this.carModel.countDocuments({}).exec();
+  async findPaginated(
+    limit: number,
+    offset: number,
+    search?: string,
+  ): Promise<[Car[], number]> {
+    const searchQuery: RootFilterQuery<Car> = search
+      ? {
+          $or: [
+            { 'client.email': { $regex: search, $options: 'i' } },
+            { brand: { $regex: search, $options: 'i' } },
+            { vin: { $regex: search, $options: 'i' } },
+            { registrationNumber: { $regex: search, $options: 'i' } },
+          ],
+        }
+      : {};
+
+    const total = await this.carModel.countDocuments(searchQuery).exec();
 
     if (total === 0) {
       return [[], 0];
     }
 
-    const cars = await this.carModel.find({}).limit(limit).skip(offset);
+    const cars = await this.carModel
+      .find(searchQuery)
+      .limit(limit)
+      .skip(offset);
 
     return [cars, total];
   }

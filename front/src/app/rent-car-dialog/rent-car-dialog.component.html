@@ -3,20 +3,20 @@
   <form [formGroup]="form" class="form-container">
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" placeholder="Enter your email" />
+      <input matInput formControlName="email" placeholder="Wprowadź email" />
       @if(form.get('email')?.invalid && form.get('email')?.touched) {
-      <mat-error>Email is required</mat-error>
+      <mat-error>Email jest wymagany</mat-error>
       }
       @if(form.get('email')?.hasError('email') && form.get('email')?.touched) {
-      <mat-error>Please enter a valid email</mat-error>
+      <mat-error>Proszę wprowadzić poprawny email</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Address</mat-label>
-      <input matInput formControlName="address" placeholder="Enter your address" />
+      <mat-label>Adres</mat-label>
+      <input matInput formControlName="address" placeholder="Wprowadź adres" />
       @if(form.get('address')?.invalid && form.get('address')?.touched) {
-      <mat-error>Address is required</mat-error>
+      <mat-error>Adres jest wymagany</mat-error>
       }
     </mat-form-field>
   </form>

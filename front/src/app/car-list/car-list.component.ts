@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { RentCarDialogComponent } from '../rent-car-dialog/rent-car-dialog.component';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-car-list',
@@ -21,6 +22,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
     MatMenuModule,
     MatIconModule,
     MatPaginatorModule,
+    SearchComponent,
   ],
   templateUrl: './car-list.component.html',
   styleUrl: './car-list.component.css',
@@ -52,6 +54,8 @@ export class CarListComponent implements OnInit {
     pageIndex: 0,
     length: 0,
   };
+
+  search: string | null = null;
 
   cars!: Observable<Car[]>;
 
@@ -154,9 +158,14 @@ export class CarListComponent implements OnInit {
     this.getCars();
   }
 
+  onSearch(search: string | null): void {
+    this.search = search;
+    this.getCars();
+  }
+
   private getCars(): void {
     this.cars = this.carHttpService
-      .getList(this.pagination.pageIndex, this.pagination.size)
+      .getList(this.pagination.pageIndex, this.pagination.size, this.search)
       .pipe(
         tap((response) => {
           this.pagination.length = response.total;
