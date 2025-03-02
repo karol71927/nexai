@@ -91,7 +91,7 @@ export class CarService {
         })
         .exec();
 
-      if (existingCar) {
+      if (existingCar && existingCar.id !== id) {
         throw new ConflictException('Car already exists');
       }
 
